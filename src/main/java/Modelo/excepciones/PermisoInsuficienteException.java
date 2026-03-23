@@ -10,6 +10,7 @@ package Modelo.excepciones;
  */
 
 
+import modelo.excepciones.BancoRuntimeException;
 
 public class PermisoInsuficienteException extends BancoRuntimeException {
 

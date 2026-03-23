@@ -8,10 +8,7 @@ package modelo.abstractas;
 import Modelo.excepciones.CapacidadExcedidaException;
 import Modelo.excepciones.CuentaBloqueadaException;
 import java.time.LocalDateTime;
-import modelo.excepciones.CuentaBloqueadaException;
-import modelo.excepciones.CapacidadExcedidaException;
-import modelo.banco.Transaccion;
-
+import modelo.banco.Transaccion; // si está en otro paquete correcto
 public abstract class Cuenta {
 
     // 🔹 Atributos
