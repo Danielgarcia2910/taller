@@ -4,22 +4,18 @@
  */
 package modelo.abstractas;
 
-/**
- *
- * @author Orly02
- */
-
 import java.time.LocalDate;
 import java.time.Period;
 import modelo.excepciones.DatoInvalidoException;
 
 public abstract class Empleado extends Persona {
-    
+
     private String legajo;
     private LocalDate fechaContratacion;
     private double salarioBase;
     private boolean activo;
 
+    // 🔹 Constructor
     public Empleado(String id, String nombre, String apellido, LocalDate fechaNacimiento,
                     String email, String legajo, LocalDate fechaContratacion,
                     double salarioBase, boolean activo) {
@@ -32,14 +28,33 @@ public abstract class Empleado extends Persona {
         this.activo = activo;
     }
 
+    // 🔹 Métodos abstractos propios
     public abstract double calcularSalario();
-
     public abstract double calcularBono();
 
+    // 🔥 MÉTODOS HEREDADOS DE Persona (OBLIGATORIOS)
+
+    @Override
+    public String obtenerTipo() {
+        return "Empleado";
+    }
+
+    @Override
+    public int calcularEdad() {
+        return Period.between(getFechaNacimiento(), LocalDate.now()).getYears();
+    }
+
+    @Override
+    public String obtenerDocumento() {
+        return getId();
+    }
+
+    // 🔹 Método extra
     public int calcularAntiguedad() {
         return Period.between(fechaContratacion, LocalDate.now()).getYears();
     }
 
+    // 🔹 Getters y Setters
 
     public String getLegajo() {
         return legajo;
@@ -57,8 +72,8 @@ public abstract class Empleado extends Persona {
     }
 
     public void setFechaContratacion(LocalDate fechaContratacion) {
-        if (fechaContratacion == null || fechaContratacion.isAfter(LocalDate.now())) {
-            throw new DatoInvalidoException("fechaContratacion", fechaContratacion);
+        if (fechaContratacion == null) {
+            throw new DatoInvalidoException("fechaContratacion", "null");
         }
         this.fechaContratacion = fechaContratacion;
     }
@@ -68,7 +83,7 @@ public abstract class Empleado extends Persona {
     }
 
     public void setSalarioBase(double salarioBase) {
-        if (salarioBase <= 0) {
+        if (salarioBase < 0) {
             throw new DatoInvalidoException("salarioBase", salarioBase);
         }
         this.salarioBase = salarioBase;

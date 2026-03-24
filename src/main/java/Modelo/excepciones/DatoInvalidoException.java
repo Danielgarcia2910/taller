@@ -11,11 +11,9 @@ package modelo.excepciones;
 public class DatoInvalidoException extends BancoRuntimeException {
 
 
-    // 🔹 Atributos obligatorios
     private String campo;
     private Object valorRecibido;
 
-    // 🔹 Constructor
    public DatoInvalidoException(String campo, Object valorRecibido) {
     super("Dato inválido en el campo: " + campo);
     this.campo = campo;

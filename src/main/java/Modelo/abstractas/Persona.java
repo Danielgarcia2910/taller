@@ -4,14 +4,13 @@
  */
 package modelo.abstractas;
 
-/**
- *
- * @author Orly02
- */
+
 
 import java.time.LocalDate;
 import java.time.Period;
 import modelo.excepciones.DatoInvalidoException;
+
+
 public abstract class Persona {
     
     private String id;
