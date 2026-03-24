@@ -2,19 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo.excepciones;
-
-/**
- *
- * @author Orly02
- */
-
-
-import modelo.excepciones.BancoRuntimeException;
+package modelo.excepciones;
 
 public class PermisoInsuficienteException extends BancoRuntimeException {
 
-    public PermisoInsuficienteException(String mensaje) {
-        super(mensaje);
+    public PermisoInsuficienteException(String accion) {
+        super("Permiso insuficiente para: " + accion);
     }
 }

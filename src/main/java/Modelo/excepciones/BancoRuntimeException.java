@@ -4,11 +4,6 @@
  */
 package modelo.excepciones;
 
-/**
- *
- * @author Orly02
- */
-
 public class BancoRuntimeException extends RuntimeException {
 
     public BancoRuntimeException(String mensaje) {

@@ -2,16 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo.excepciones;
+package modelo.excepciones;
 
-/**
- *
- * @author Orly02
- */
+public class EstadoTransaccionInvalidoException extends BancoRuntimeException {
 
-public class EstadoTransaccionInvalidoException extends SistemaBancarioException{
-
-    public EstadoTransaccionInvalidoException(String mensaje) {
-        super(mensaje);
+    public EstadoTransaccionInvalidoException(String estadoActual, String nuevoEstado) {
+        super("No se puede cambiar de " + estadoActual + " a " + nuevoEstado);
     }
 }

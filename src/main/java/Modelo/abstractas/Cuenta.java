@@ -4,69 +4,70 @@
  */
 package modelo.abstractas;
 
+import modelo.banco.Transaccion;
 
-import Modelo.excepciones.CapacidadExcedidaException;
-import Modelo.excepciones.CuentaBloqueadaException;
 import java.time.LocalDateTime;
-import modelo.banco.Transaccion; // si está en otro paquete correcto
+import modelo.excepciones.CapacidadExcedidaException;
+import modelo.excepciones.CuentaBloqueadaException;
+
 public abstract class Cuenta {
 
-    // 🔹 Atributos
     private String numeroCuenta;
     private double saldo;
     private boolean bloqueada;
+
     private LocalDateTime fechaCreacion;
     private LocalDateTime ultimaModificacion;
     private String usuarioModificacion;
 
-    // 🔹 Historial (máximo 20)
+    // 🔹 Historial (máx 20)
     private Transaccion[] historial;
-    private int cantidadTransacciones;
+    private int contadorTransacciones;
 
     // 🔹 Constructor
-    public Cuenta(String numeroCuenta, double saldo) {
+    public Cuenta(String numeroCuenta, double saldo, boolean bloqueada) {
         this.numeroCuenta = numeroCuenta;
         this.saldo = saldo;
-        this.bloqueada = false;
+        this.bloqueada = bloqueada;
+
         this.fechaCreacion = LocalDateTime.now();
         this.ultimaModificacion = LocalDateTime.now();
+        this.usuarioModificacion = "sistema";
+
         this.historial = new Transaccion[20];
-        this.cantidadTransacciones = 0;
+        this.contadorTransacciones = 0;
     }
 
-    // 🔹 Métodos abstractos
+    // 🔥 MÉTODOS ABSTRACTOS (OBLIGATORIOS)
+
     public abstract double calcularInteres();
 
     public abstract double getLimiteRetiro();
 
     public abstract String getTipoCuenta();
 
-    // 🔹 Verificar si la cuenta está bloqueada
+    // 🔹 MÉTODOS CONCRETOS
+
     public void verificarBloqueada() throws CuentaBloqueadaException {
         if (bloqueada) {
             throw new CuentaBloqueadaException("La cuenta está bloqueada");
         }
     }
 
-    // 🔹 Agregar transacción al historial
     public void agregarAlHistorial(Transaccion t) throws CapacidadExcedidaException {
-        if (cantidadTransacciones >= historial.length) {
-            throw new CapacidadExcedidaException("Historial lleno", historial.length);
+        if (contadorTransacciones >= historial.length) {
+            throw new CapacidadExcedidaException(20);
         }
-        historial[cantidadTransacciones] = t;
-        cantidadTransacciones++;
+        historial[contadorTransacciones++] = t;
     }
 
-    // 🔹 Obtener copia del historial
     public Transaccion[] getHistorial() {
-        Transaccion[] copia = new Transaccion[cantidadTransacciones];
-        for (int i = 0; i < cantidadTransacciones; i++) {
-            copia[i] = historial[i];
-        }
+        Transaccion[] copia = new Transaccion[contadorTransacciones];
+        System.arraycopy(historial, 0, copia, 0, contadorTransacciones);
         return copia;
     }
 
-    // 🔹 Getters y Setters
+    // 🔹 GETTERS Y SETTERS
 
     public String getNumeroCuenta() {
         return numeroCuenta;
@@ -80,7 +81,7 @@ public abstract class Cuenta {
         return saldo;
     }
 
-    protected void setSaldo(double saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 

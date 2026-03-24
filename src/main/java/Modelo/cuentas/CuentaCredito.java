@@ -4,34 +4,37 @@
  */
 package modelo.cuentas;
 
-import Modelo.excepciones.CapacidadExcedidaException;
-import Modelo.excepciones.CuentaBloqueadaException;
-import Modelo.excepciones.SaldoInsuficienteException;
 import modelo.abstractas.Cuenta;
-import modelo.banco.Transaccion;
+import modelo.interfaces.*;
+import modelo.excepciones.*;
 
+import java.time.LocalDateTime;
 
-
-public class CuentaCredito extends Cuenta {
+public class CuentaCredito extends Cuenta 
+        implements Consultable, Transaccionable, Auditable {
 
     private double limiteCredito;
-    private double deuda;
+    private double tasaInteres;
+    private double deudaActual;
 
-    public CuentaCredito(String numeroCuenta, double limiteCredito) {
-        super(numeroCuenta, 0); 
+    public CuentaCredito(String numeroCuenta, double saldo, boolean bloqueada,
+                         double limiteCredito, double tasaInteres) {
+
+        super(numeroCuenta, saldo, bloqueada);
         this.limiteCredito = limiteCredito;
-        this.deuda = 0;
+        this.tasaInteres = tasaInteres;
+        this.deudaActual = 0;
     }
 
 
     @Override
     public double calcularInteres() {
-        return deuda * 0.02; 
+        return deudaActual * tasaInteres / 12;
     }
 
     @Override
     public double getLimiteRetiro() {
-        return limiteCredito - deuda;
+        return limiteCredito;
     }
 
     @Override
@@ -39,48 +42,76 @@ public class CuentaCredito extends Cuenta {
         return "Credito";
     }
 
-    public void retirar(double monto)
-            throws CuentaBloqueadaException, SaldoInsuficienteException, CapacidadExcedidaException {
+
+    @Override
+    public void depositar(double monto)
+            throws CuentaBloqueadaException {
 
         verificarBloqueada();
 
-        if (monto > getLimiteRetiro()) {
-            throw new SaldoInsuficienteException("Supera el límite de crédito",getLimiteRetiro(),monto);
-        }
-
-        deuda += monto;
-
-        agregarAlHistorial(new Transaccion(-monto));
+        deudaActual -= monto;
+        if (deudaActual < 0) deudaActual = 0;
     }
 
-    public void depositar(double monto)
+    @Override
+    public void retirar(double monto)
             throws CuentaBloqueadaException, CapacidadExcedidaException {
 
         verificarBloqueada();
 
-        if (monto <= 0) {
-            return;
+        if (deudaActual + monto > limiteCredito) {
+            throw new CapacidadExcedidaException((int) limiteCredito);
         }
 
-        deuda -= monto;
+        deudaActual += monto;
+    }
 
-        if (deuda < 0) {
-            deuda = 0;
-        }
+    @Override
+    public double calcularComision(double monto) {
+        return monto * 0.02;
+    }
 
-        agregarAlHistorial(new Transaccion(monto));
+    @Override
+    public double consultarSaldo() {
+        return limiteCredito - deudaActual;
     }
 
 
-    public double getLimiteCredito() {
-        return limiteCredito;
+    @Override
+    public String obtenerResumen() {
+        return "Cuenta Crédito: " + getNumeroCuenta() +
+               " | Deuda: " + deudaActual;
     }
 
-    public void setLimiteCredito(double limiteCredito) {
-        this.limiteCredito = limiteCredito;
+    @Override
+    public boolean estaActivo() {
+        return !isBloqueada();
     }
 
-    public double getDeuda() {
-        return deuda;
+    @Override
+    public String obtenerTipo() {
+        return "CuentaCredito";
+    }
+
+
+    @Override
+    public LocalDateTime obtenerFechaCreacion() {
+        return getFechaCreacion();
+    }
+
+    @Override
+    public LocalDateTime obtenerUltimaModificacion() {
+        return getUltimaModificacion();
+    }
+
+    @Override
+    public String obtenerUsuarioModificacion() {
+        return getUsuarioModificacion();
+    }
+
+    @Override
+    public void registrarModificacion(String usuario) {
+        setUltimaModificacion(LocalDateTime.now());
+        setUsuarioModificacion(usuario);
     }
 }

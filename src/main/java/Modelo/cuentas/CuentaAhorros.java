@@ -4,33 +4,40 @@
  */
 package modelo.cuentas;
 
-
-
-import Modelo.excepciones.CapacidadExcedidaException;
-import Modelo.excepciones.CuentaBloqueadaException;
-import Modelo.excepciones.SaldoInsuficienteException;
 import modelo.abstractas.Cuenta;
-import modelo.banco.Transaccion;
-public class CuentaAhorros extends Cuenta {
+import modelo.interfaces.Consultable;
+import modelo.interfaces.Transaccionable;
+import modelo.interfaces.Auditable;
+import modelo.excepciones.*;
+
+import java.time.LocalDateTime;
+
+public class CuentaAhorros extends Cuenta 
+        implements Consultable, Transaccionable, Auditable {
 
     private double tasaInteres;
+    private int retirosMesActual;
+    private int maxRetirosMes;
 
-    // 🔹 Constructor
-    public CuentaAhorros(String numeroCuenta, double saldo, double tasaInteres) {
-        super(numeroCuenta, saldo);
+    public CuentaAhorros(String numeroCuenta, double saldo, boolean bloqueada,
+                         double tasaInteres, int maxRetirosMes) {
+
+        super(numeroCuenta, saldo, bloqueada);
+
         this.tasaInteres = tasaInteres;
+        this.maxRetirosMes = maxRetirosMes;
+        this.retirosMesActual = 0;
     }
 
-    // 🔹 Implementación de métodos abstractos
 
     @Override
     public double calcularInteres() {
-        return getSaldo() * tasaInteres;
+        return getSaldo() * tasaInteres / 12;
     }
 
     @Override
     public double getLimiteRetiro() {
-        return 1000000; // límite ejemplo
+        return 1000; 
     }
 
     @Override
@@ -38,55 +45,75 @@ public class CuentaAhorros extends Cuenta {
         return "Ahorros";
     }
 
-    // 🔹 Depositar dinero
+
+    @Override
     public void depositar(double monto)
-            throws CuentaBloqueadaException, CapacidadExcedidaException {
+            throws CuentaBloqueadaException {
 
         verificarBloqueada();
-
-        if (monto <= 0) {
-            return;
-        }
-
         setSaldo(getSaldo() + monto);
-
-        agregarAlHistorial(new Transaccion(monto));
     }
 
-    // 🔹 Retirar dinero
+    @Override
     public void retirar(double monto)
-            throws CuentaBloqueadaException, SaldoInsuficienteException, CapacidadExcedidaException {
+            throws CuentaBloqueadaException, SaldoInsuficienteException {
 
         verificarBloqueada();
 
         if (monto > getSaldo()) {
-            throw new SaldoInsuficienteException(
-                    "Saldo insuficiente",
-                    getSaldo(),
-                    monto
-            );
-        }
-
-        if (monto > getLimiteRetiro()) {
-            throw new SaldoInsuficienteException(
-                    "Supera el límite de retiro",
-                    getSaldo(),
-                    monto
-            );
+            throw new SaldoInsuficienteException(getSaldo(), monto);
         }
 
         setSaldo(getSaldo() - monto);
-
-        agregarAlHistorial(new Transaccion(-monto));
+        retirosMesActual++;
     }
 
-    // 🔹 Getter y Setter
-
-    public double getTasaInteres() {
-        return tasaInteres;
+    @Override
+    public double calcularComision(double monto) {
+        return monto * 0.01;
     }
 
-    public void setTasaInteres(double tasaInteres) {
-        this.tasaInteres = tasaInteres;
+    @Override
+    public double consultarSaldo() {
+        return getSaldo();
+    }
+
+
+    @Override
+    public String obtenerResumen() {
+        return "Cuenta Ahorros: " + getNumeroCuenta() +
+               " | Saldo: " + getSaldo();
+    }
+
+    @Override
+    public boolean estaActivo() {
+        return !isBloqueada();
+    }
+
+    @Override
+    public String obtenerTipo() {
+        return "CuentaAhorros";
+    }
+
+
+    @Override
+    public LocalDateTime obtenerFechaCreacion() {
+        return getFechaCreacion();
+    }
+
+    @Override
+    public LocalDateTime obtenerUltimaModificacion() {
+        return getUltimaModificacion();
+    }
+
+    @Override
+    public String obtenerUsuarioModificacion() {
+        return getUsuarioModificacion();
+    }
+
+    @Override
+    public void registrarModificacion(String usuario) {
+        setUltimaModificacion(LocalDateTime.now());
+        setUsuarioModificacion(usuario);
     }
 }

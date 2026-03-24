@@ -2,20 +2,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo.excepciones;
-
-
+package modelo.excepciones;
 
 import java.time.LocalDateTime;
 
 public class SistemaBancarioException extends Exception {
 
-    protected String codigoError;
-    protected LocalDateTime timestamp;
+    private String codigoError;
+    private LocalDateTime timestamp;
 
-    public SistemaBancarioException(String mensaje) {
+    public SistemaBancarioException(String mensaje, String codigoError) {
         super(mensaje);
+        this.codigoError = codigoError;
         this.timestamp = LocalDateTime.now();
-        this.codigoError = "ERR-" + System.currentTimeMillis();
+    }
+
+    public String getCodigoError() {
+        return codigoError;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "Error: " + getMessage() +
+               " | Código: " + codigoError +
+               " | Fecha: " + timestamp;
     }
 }

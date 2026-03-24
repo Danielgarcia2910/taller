@@ -4,31 +4,35 @@
  */
 package modelo.cuentas;
 
-
-import Modelo.excepciones.CapacidadExcedidaException;
-import Modelo.excepciones.CuentaBloqueadaException;
-import Modelo.excepciones.SaldoInsuficienteException;
 import modelo.abstractas.Cuenta;
-import modelo.banco.Transaccion;
+import modelo.interfaces.*;
+import modelo.excepciones.*;
 
-public class CuentaCorriente extends Cuenta {
+import java.time.LocalDateTime;
 
-    private double sobregiro; 
+public class CuentaCorriente extends Cuenta 
+        implements Consultable, Transaccionable, Auditable {
 
-    public CuentaCorriente(String numeroCuenta, double saldo, double sobregiro) {
-        super(numeroCuenta, saldo);
-        this.sobregiro = sobregiro;
+    private double montoSobregiro;
+    private double comisionMantenimiento;
+
+    public CuentaCorriente(String numeroCuenta, double saldo, boolean bloqueada,
+                           double montoSobregiro, double comisionMantenimiento) {
+
+        super(numeroCuenta, saldo, bloqueada);
+        this.montoSobregiro = montoSobregiro;
+        this.comisionMantenimiento = comisionMantenimiento;
     }
 
 
     @Override
     public double calcularInteres() {
-        return 0;
+        return 0; 
     }
 
     @Override
     public double getLimiteRetiro() {
-        return getSaldo() + sobregiro;
+        return getSaldo() + montoSobregiro;
     }
 
     @Override
@@ -36,45 +40,74 @@ public class CuentaCorriente extends Cuenta {
         return "Corriente";
     }
 
-    // 🔹 Depositar
+
+    @Override
     public void depositar(double monto)
-            throws CuentaBloqueadaException, CapacidadExcedidaException {
+            throws CuentaBloqueadaException {
 
         verificarBloqueada();
-
-        if (monto <= 0) {
-            return;
-        }
-
         setSaldo(getSaldo() + monto);
-
-        agregarAlHistorial(new Transaccion(monto));
     }
 
+    @Override
     public void retirar(double monto)
-            throws CuentaBloqueadaException, SaldoInsuficienteException, CapacidadExcedidaException {
+            throws CuentaBloqueadaException, SaldoInsuficienteException {
 
         verificarBloqueada();
 
-        if (monto > getSaldo() + sobregiro) {
-            throw new SaldoInsuficienteException(
-                    "Supera el límite de sobregiro",
-                    getSaldo(),
-                    monto
-            );
+        if (monto > getSaldo() + montoSobregiro) {
+            throw new SaldoInsuficienteException(getSaldo(), monto);
         }
 
         setSaldo(getSaldo() - monto);
+    }
 
-        agregarAlHistorial(new Transaccion(-monto));
+    @Override
+    public double calcularComision(double monto) {
+        return comisionMantenimiento;
+    }
+
+    @Override
+    public double consultarSaldo() {
+        return getSaldo();
     }
 
 
-    public double getSobregiro() {
-        return sobregiro;
+    @Override
+    public String obtenerResumen() {
+        return "Cuenta Corriente: " + getNumeroCuenta() +
+               " | Saldo: " + getSaldo();
     }
 
-    public void setSobregiro(double sobregiro) {
-        this.sobregiro = sobregiro;
+    @Override
+    public boolean estaActivo() {
+        return !isBloqueada();
+    }
+
+    @Override
+    public String obtenerTipo() {
+        return "CuentaCorriente";
+    }
+
+
+    @Override
+    public LocalDateTime obtenerFechaCreacion() {
+        return getFechaCreacion();
+    }
+
+    @Override
+    public LocalDateTime obtenerUltimaModificacion() {
+        return getUltimaModificacion();
+    }
+
+    @Override
+    public String obtenerUsuarioModificacion() {
+        return getUsuarioModificacion();
+    }
+
+    @Override
+    public void registrarModificacion(String usuario) {
+        setUltimaModificacion(LocalDateTime.now());
+        setUsuarioModificacion(usuario);
     }
 }

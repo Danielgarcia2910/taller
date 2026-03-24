@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.excepciones;
+package modelo.interfaces;
 
-public class CuentaBloqueadaException extends SistemaBancarioException {
+public interface Consultable {
 
-    public CuentaBloqueadaException(String mensaje) {
-        super(mensaje, "CTA-001");
-    }
+    String obtenerResumen();
+
+    boolean estaActivo();
+
+    String obtenerTipo();
 }

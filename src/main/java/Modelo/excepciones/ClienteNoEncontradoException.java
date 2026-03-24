@@ -2,19 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo.excepciones;
-
-/**
- *
- * @author Orly02
- */
+package modelo.excepciones;
 
 public class ClienteNoEncontradoException extends SistemaBancarioException {
 
     private String idCliente;
 
-    public ClienteNoEncontradoException(String mensaje, String idCliente) {
-        super(mensaje);
+    public ClienteNoEncontradoException(String idCliente) {
+        super("Cliente no encontrado: " + idCliente, "CLI-001");
         this.idCliente = idCliente;
     }
 
@@ -24,9 +19,6 @@ public class ClienteNoEncontradoException extends SistemaBancarioException {
 
     @Override
     public String toString() {
-        return "ClienteNoEncontradoException{" +
-                "idCliente='" + idCliente + '\'' +
-                ", mensaje=" + getMessage() +
-                '}';
+        return super.toString() + " | ID: " + idCliente;
     }
 }
