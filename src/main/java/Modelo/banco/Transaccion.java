@@ -49,6 +49,6 @@ public class Transaccion {
     }
 
     public String generarComprobante() {
-        return "Transacción " + id + " | Monto: " + monto + " | Estado: " + estado;
+        return "transaccin " + id + " | monto: " + monto + " | estado: " + estado;
     }
 }

@@ -20,10 +20,7 @@ public class ClienteEmpresarial extends Cliente {
 
     private static final int MAX_CUENTAS = 5;
 
-    public ClienteEmpresarial(String id, String nombre, String apellido,
-                              LocalDate fechaNacimiento, String email,
-                              boolean activo, String nit,
-                              String razonSocial, String representanteLegal) {
+    public ClienteEmpresarial(String id, String nombre, String apellido,LocalDate fechaNacimiento, String email,boolean activo, String nit,String razonSocial, String representanteLegal) {
 
         super(id, nombre, apellido, fechaNacimiento, email, activo);
 
@@ -37,7 +34,7 @@ public class ClienteEmpresarial extends Cliente {
 
     public void agregarCuenta(Cuenta cuenta) throws CapacidadExcedidaException {
         if (cantidadCuentas >= MAX_CUENTAS) {
-            throw new CapacidadExcedidaException("Máximo de cuentas alcanzado", MAX_CUENTAS);
+            throw new CapacidadExcedidaException("Maximo de cuentas alcanzado", MAX_CUENTAS);
         }
         cuentas[cantidadCuentas++] = cuenta;
     }
@@ -68,7 +65,7 @@ public class ClienteEmpresarial extends Cliente {
     }
     
     @Override
-public int calcularEdad() {
-    return java.time.Period.between(getFechaNacimiento(), java.time.LocalDate.now()).getYears();
-}
+    public int calcularEdad() {
+        return java.time.Period.between(getFechaNacimiento(), java.time.LocalDate.now()).getYears();
+    }
 }

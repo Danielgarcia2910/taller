@@ -20,11 +20,9 @@ public abstract class Cuenta {
     private LocalDateTime ultimaModificacion;
     private String usuarioModificacion;
 
-    // 🔹 Historial (máx 20)
     private Transaccion[] historial;
     private int contadorTransacciones;
 
-    // 🔹 Constructor
     public Cuenta(String numeroCuenta, double saldo, boolean bloqueada) {
         this.numeroCuenta = numeroCuenta;
         this.saldo = saldo;
@@ -38,7 +36,6 @@ public abstract class Cuenta {
         this.contadorTransacciones = 0;
     }
 
-    // 🔥 MÉTODOS ABSTRACTOS (OBLIGATORIOS)
 
     public abstract double calcularInteres();
 
@@ -46,11 +43,10 @@ public abstract class Cuenta {
 
     public abstract String getTipoCuenta();
 
-    // 🔹 MÉTODOS CONCRETOS
 
     public void verificarBloqueada() throws CuentaBloqueadaException {
         if (bloqueada) {
-            throw new CuentaBloqueadaException("La cuenta está bloqueada");
+            throw new CuentaBloqueadaException("la cuenta esta bloqueada");
         }
     }
 
@@ -67,7 +63,6 @@ public abstract class Cuenta {
         return copia;
     }
 
-    // 🔹 GETTERS Y SETTERS
 
     public String getNumeroCuenta() {
         return numeroCuenta;

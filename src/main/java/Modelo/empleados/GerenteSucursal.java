@@ -16,14 +16,10 @@ public class GerenteSucursal extends Empleado implements Consultable, Auditable 
     private String sucursal;
     private double presupuestoAnual;
 
-    public GerenteSucursal(String id, String nombre, String apellido,
-                           LocalDate fechaNacimiento, String email,
-                           String legajo, LocalDate fechaContratacion,
-                           double salarioBase, boolean activo,
-                           String sucursal, double presupuestoAnual) {
+    public GerenteSucursal(String id, String nombre, String apellido,LocalDate fechaNacimiento, String email,String legajo, LocalDate fechaContratacion,double salarioBase, boolean activo,
+    String sucursal, double presupuestoAnual) {
 
-        super(id, nombre, apellido, fechaNacimiento, email,
-              legajo, fechaContratacion, salarioBase, activo);
+        super(id, nombre, apellido, fechaNacimiento, email,legajo, fechaContratacion, salarioBase, activo);
 
         this.sucursal = sucursal;
         this.presupuestoAnual = presupuestoAnual;
@@ -73,4 +69,12 @@ public class GerenteSucursal extends Empleado implements Consultable, Auditable 
     public void registrarModificacion(String usuario) {
         System.out.println("Modificado por: " + usuario);
     }
+    @Override
+    public int calcularEdad() {
+    return java.time.Period.between(getFechaNacimiento(), java.time.LocalDate.now()).getYears();
+    }
+    @Override
+    public String obtenerDocumento() {
+        return getId();
+}
 }

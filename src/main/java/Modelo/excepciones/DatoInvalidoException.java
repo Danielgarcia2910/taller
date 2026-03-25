@@ -10,7 +10,7 @@ public class DatoInvalidoException extends BancoRuntimeException {
     private Object valorRecibido;
 
     public DatoInvalidoException(String campo, Object valorRecibido) {
-        super("Dato inválido en " + campo + ": " + valorRecibido);
+        super("dato invalido en " + campo + ": " + valorRecibido);
         this.campo = campo;
         this.valorRecibido = valorRecibido;
     }

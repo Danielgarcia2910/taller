@@ -14,19 +14,16 @@ public abstract class Empleado extends Persona {
     private double salarioBase;
     private boolean activo;
 
-    public Empleado(String id, String nombre, String apellido,
-                    LocalDate fechaNacimiento, String email,
-                    String legajo, LocalDate fechaContratacion,
-                    double salarioBase, boolean activo) {
+    public Empleado(String id, String nombre, String apellido,LocalDate fechaNacimiento, String email,String legajo, LocalDate fechaContratacion,double salarioBase, boolean activo) {
 
         super(id, nombre, apellido, fechaNacimiento, email);
 
         if (salarioBase <= 0) {
-            throw new RuntimeException("Salario inválido");
+            throw new RuntimeException("salario invalido");
         }
 
         if (fechaContratacion.isAfter(LocalDate.now())) {
-            throw new RuntimeException("Fecha inválida");
+            throw new RuntimeException("fecha invalida");
         }
 
         this.legajo = legajo;

@@ -19,13 +19,10 @@ public class Cajero extends Empleado
     private String sucursalAsignada;
     private int transaccionesDia;
 
-    public Cajero(String id, String nombre, String apellido, LocalDate fechaNacimiento,
-                  String email, String legajo, LocalDate fechaContratacion,
-                  double salarioBase, boolean activo,
-                  Turno turno, String sucursalAsignada) {
+    public Cajero(String id, String nombre, String apellido, LocalDate fechaNacimiento,String email, String legajo, LocalDate fechaContratacion,double salarioBase, boolean activo,
+            Turno turno, String sucursalAsignada) {
 
-        super(id, nombre, apellido, fechaNacimiento, email,
-              legajo, fechaContratacion, salarioBase, activo);
+        super(id, nombre, apellido, fechaNacimiento, email,legajo, fechaContratacion, salarioBase, activo);
 
         this.turno = turno;
         this.sucursalAsignada = sucursalAsignada;
@@ -51,9 +48,7 @@ public class Cajero extends Empleado
 
     @Override
     public String obtenerResumen() {
-        return "Cajero: " + getNombrecompleto() +
-               " | Legajo: " + getLegajo() +
-               " | Turno: " + turno;
+        return "Cajero: " + getNombrecompleto() + " | Legajo: " + getLegajo() + " | Turno: " + turno;
     }
 
     @Override
@@ -79,7 +74,7 @@ public class Cajero extends Empleado
 
     @Override
     public void registrarModificacion(String usuario) {
-        System.out.println("Modificado por: " + usuario);
+        System.out.println("modificado por: " + usuario);
     }
 
 
@@ -105,5 +100,15 @@ public class Cajero extends Empleado
 
     public void setTransaccionesDia(int transaccionesDia) {
         this.transaccionesDia = transaccionesDia;
+    }
+    
+    @Override
+    public int calcularEdad() {
+        return java.time.Period.between(getFechaNacimiento(), java.time.LocalDate.now()).getYears();
+    }
+    
+    @Override
+    public String obtenerDocumento() {
+        return getId();
     }
 }

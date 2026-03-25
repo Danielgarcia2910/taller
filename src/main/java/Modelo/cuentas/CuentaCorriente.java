@@ -10,14 +10,12 @@ import modelo.excepciones.*;
 
 import java.time.LocalDateTime;
 
-public class CuentaCorriente extends Cuenta 
-        implements Consultable, Transaccionable, Auditable {
+public class CuentaCorriente extends Cuenta implements Consultable, Transaccionable, Auditable {
 
     private double montoSobregiro;
     private double comisionMantenimiento;
 
-    public CuentaCorriente(String numeroCuenta, double saldo, boolean bloqueada,
-                           double montoSobregiro, double comisionMantenimiento) {
+    public CuentaCorriente(String numeroCuenta, double saldo, boolean bloqueada,double montoSobregiro, double comisionMantenimiento) {
 
         super(numeroCuenta, saldo, bloqueada);
         this.montoSobregiro = montoSobregiro;
@@ -37,7 +35,7 @@ public class CuentaCorriente extends Cuenta
 
     @Override
     public String getTipoCuenta() {
-        return "Corriente";
+        return "corriente";
     }
 
 
@@ -75,8 +73,7 @@ public class CuentaCorriente extends Cuenta
 
     @Override
     public String obtenerResumen() {
-        return "Cuenta Corriente: " + getNumeroCuenta() +
-               " | Saldo: " + getSaldo();
+        return "cuenta corriente: " + getNumeroCuenta() +" | saldo: " + getSaldo();
     }
 
     @Override

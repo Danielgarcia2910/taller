@@ -27,8 +27,6 @@ public class SistemaBancarioException extends Exception {
 
     @Override
     public String toString() {
-        return "Error: " + getMessage() +
-               " | Código: " + codigoError +
-               " | Fecha: " + timestamp;
+        return "Error: " + getMessage() +" | Codigo: " + codigoError +" | Fecha: " + timestamp;
     }
 }

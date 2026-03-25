@@ -9,7 +9,7 @@ public class ClienteNoEncontradoException extends SistemaBancarioException {
     private String idCliente;
 
     public ClienteNoEncontradoException(String idCliente) {
-        super("Cliente no encontrado: " + idCliente, "CLI-001");
+        super("cliente no encontrado: " + idCliente, "CLI-001");
         this.idCliente = idCliente;
     }
 

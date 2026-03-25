@@ -18,8 +18,7 @@ public abstract class Cliente extends Persona implements Consultable, Notificabl
     protected LocalDateTime ultimaModificacion;
     protected String usuarioModificacion;
 
-    public Cliente(String id, String nombre, String apellido,
-                   LocalDate fechaNacimiento, String email, boolean activo) {
+    public Cliente(String id, String nombre, String apellido,LocalDate fechaNacimiento, String email, boolean activo) {
 
         super(id, nombre, apellido, fechaNacimiento, email);
         this.activo = activo;
@@ -35,7 +34,7 @@ public abstract class Cliente extends Persona implements Consultable, Notificabl
     @Override
     public void notificar(String mensaje) {
         if (aceptaNotificaciones()) {
-            System.out.println("Notificación para " + getNombrecompleto() + ": " + mensaje);
+            System.out.println("notificacion para " + getNombrecompleto() + ": " + mensaje);
         }
     }
 
@@ -60,7 +59,6 @@ public abstract class Cliente extends Persona implements Consultable, Notificabl
         this.usuarioModificacion = usuario;
     }
 
-    // 🔹 Este lo dejan las clases hijas
     @Override
     public abstract String obtenerResumen();
 

@@ -10,15 +10,13 @@ import modelo.excepciones.*;
 
 import java.time.LocalDateTime;
 
-public class CuentaCredito extends Cuenta 
-        implements Consultable, Transaccionable, Auditable {
+public class CuentaCredito extends Cuenta implements Consultable, Transaccionable, Auditable {
 
     private double limiteCredito;
     private double tasaInteres;
     private double deudaActual;
 
-    public CuentaCredito(String numeroCuenta, double saldo, boolean bloqueada,
-                         double limiteCredito, double tasaInteres) {
+    public CuentaCredito(String numeroCuenta, double saldo, boolean bloqueada,double limiteCredito, double tasaInteres) {
 
         super(numeroCuenta, saldo, bloqueada);
         this.limiteCredito = limiteCredito;
@@ -39,7 +37,7 @@ public class CuentaCredito extends Cuenta
 
     @Override
     public String getTipoCuenta() {
-        return "Credito";
+        return "credito";
     }
 
 
@@ -79,8 +77,7 @@ public class CuentaCredito extends Cuenta
 
     @Override
     public String obtenerResumen() {
-        return "Cuenta Crédito: " + getNumeroCuenta() +
-               " | Deuda: " + deudaActual;
+        return "cuenta crediito: " + getNumeroCuenta() +" | deuda: " + deudaActual;
     }
 
     @Override

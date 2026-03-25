@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package modelo.personas;
 
 import modelo.enums.TipoDocumento;
@@ -19,10 +16,7 @@ public class ClienteNatural extends Cliente {
 
     private static final int MAX_CUENTAS = 5;
 
-    public ClienteNatural(String id, String nombre, String apellido,
-                          LocalDate fechaNacimiento, String email,
-                          boolean activo, TipoDocumento tipoDocumento,
-                          String numeroDocumento) {
+    public ClienteNatural(String id, String nombre, String apellido, LocalDate fechaNacimiento, String email,boolean activo, TipoDocumento tipoDocumento,String numeroDocumento) {
 
         super(id, nombre, apellido, fechaNacimiento, email, activo);
 
@@ -34,7 +28,7 @@ public class ClienteNatural extends Cliente {
 
     public void agregarCuenta(Cuenta cuenta) throws CapacidadExcedidaException {
         if (cantidadCuentas >= MAX_CUENTAS) {
-            throw new CapacidadExcedidaException("Máximo de cuentas alcanzado", MAX_CUENTAS);
+            throw new CapacidadExcedidaException("Maximo de cuentas alcanzado", MAX_CUENTAS);
         }
         cuentas[cantidadCuentas++] = cuenta;
     }
@@ -65,7 +59,12 @@ public class ClienteNatural extends Cliente {
     }
     
     @Override
-public int calcularEdad() {
-    return java.time.Period.between(getFechaNacimiento(), java.time.LocalDate.now()).getYears();
+    
+    public int calcularEdad() {
+        
+        return java.time.Period.between(getFechaNacimiento(), java.time.LocalDate.now()).getYears();
+    
+    }
 }
-}
+
+

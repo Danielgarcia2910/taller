@@ -19,8 +19,7 @@ public class CuentaAhorros extends Cuenta
     private int retirosMesActual;
     private int maxRetirosMes;
 
-    public CuentaAhorros(String numeroCuenta, double saldo, boolean bloqueada,
-                         double tasaInteres, int maxRetirosMes) {
+    public CuentaAhorros(String numeroCuenta, double saldo, boolean bloqueada,double tasaInteres, int maxRetirosMes) {
 
         super(numeroCuenta, saldo, bloqueada);
 
@@ -42,7 +41,7 @@ public class CuentaAhorros extends Cuenta
 
     @Override
     public String getTipoCuenta() {
-        return "Ahorros";
+        return "ahoros";
     }
 
 
@@ -81,8 +80,7 @@ public class CuentaAhorros extends Cuenta
 
     @Override
     public String obtenerResumen() {
-        return "Cuenta Ahorros: " + getNumeroCuenta() +
-               " | Saldo: " + getSaldo();
+        return "cuenta ahorros: " + getNumeroCuenta() +" | saldo: " + getSaldo();
     }
 
     @Override
